@@ -24,7 +24,7 @@ O projeto utiliza apenas bibliotecas nativas do Python (Standard Library), garan
 
 O script identifica automaticamente o sistema operacional para ajustar os parâmetros do comando `ping`. Ele utiliza um socket UDP para forçar a descoberta do IP de rede sem a necessidade de pacotes externos, tornando a ferramenta rápida e eficiente para diagnósticos rápidos de infraestrutura.
 
-## 💻 Como Rodar
+##  Como Rodar
 
 1. Certifique-se de ter o **Python 3.x** instalado.
 2. Clone o repositório ou baixe o arquivo `monitor_rede.py`.
