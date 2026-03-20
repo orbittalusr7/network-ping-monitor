@@ -66,7 +66,7 @@ def analisar_rede():
         elif ping_ms < 250:
             texto_status = "Conexão com Latência Alta"
             cor = "orange"
-	else:
+        else:
 		texto_status = "Conexão Instável / Muito Lenta"
 		cor = "darkred"
 
