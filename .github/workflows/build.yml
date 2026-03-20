@@ -28,7 +28,7 @@ jobs:
 
     - name: Gerando o .exe com PyInstaller
       run: |
-        pyinstaller --onefile --noconsole --icon=icone.ico -n "Monitor_de_Rede" monitor_rede.py
+        pyinstaller --onefile --noconsole -n "Monitor_de_Rede" monitor_rede.py
 
     - name: Criando a Release e subindo o arquivo
       uses: softprops/action-gh-release@v2
