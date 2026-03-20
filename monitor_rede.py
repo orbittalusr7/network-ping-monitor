@@ -58,17 +58,20 @@ def analisar_rede():
         texto_ping = f"Ping: {ping_ms:.0f} ms"
         # Lógica de avaliação do Ping
         if ping_ms < 50:
-            texto_status = "A conexão da rede está excelente"
+            texto_status = "Conexão Excelente"
             cor = "green"
         elif ping_ms < 150:
-            texto_status = "A conexão da rede está boa"
+            texto_status = "Conexão Estável"
             cor = "blue"
-        else:
-            texto_status = "A conexão da rede está ruim"
+        elif ping_ms < 250:
+            texto_status = "Conexão com Latência Alta"
             cor = "orange"
+	else:
+		texto_status = "Conexão Instável / Muito Lenta"
+		cor = "darkred"
 
      # Atualiza os textos na interface gráfica
-    lbl_ip.config(text=f"IP da rede: {ip}")
+    lbl_ip.config(text=f"IP Local: {ip}")
     lbl_status.config(text=texto_status, fg=cor)
     lbl_ping.config(text=texto_ping)
     
@@ -81,10 +84,10 @@ root.title("Monitor de Rede")
 root.geometry("350x200")
 
 # Elementos visuais
-lbl_ip = tk.Label(root, text="IP da rede: Aguardando...", font=("Arial", 12))
+lbl_ip = tk.Label(root, text="Status: Aguardando...", font=("Arial", 12))
 lbl_ip.pack(pady=15)
 
-lbl_status = tk.Label(root, text="IP da rede: Aguardando...", font=("Arial", 12, "bold"))
+lbl_status = tk.Label(root, text="Status: Aguardando...", font=("Arial", 12, "bold"))
 lbl_status.pack(pady=5)
 
 lbl_ping = tk.Label(root, text="Ping: Aguardando...", font=("Arial", 12))
