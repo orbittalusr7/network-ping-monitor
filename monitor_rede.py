@@ -8,7 +8,6 @@ def obter_ip_local():
     """Descobre o IP local da máquina."""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # Tenta conectar ao DNS do Google (não envia dados de fato)
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
@@ -19,15 +18,12 @@ def obter_ip_local():
 def obter_ping():
     """Faz um ping para o DNS do Google (8.8.8.8) e retorna o tempo em ms."""
     host = "8.8.8.8"
-    # No Windows o parâmetro é '-n', no Linux/Mac é '-c'
     param = '-n' if platform.system().lower() == 'windows' else '-c'
     comando = ['ping', param, '1', host]
 
     try:
-        #Roda o comando no terminal em segundo plano e  captura a saída
         saida = subprocess.check_output(comando, stderr=subprocess.STDOUT, universal_newlines=True) 
         
-        #Procura o valor do tempo de resposta (ms) no texto retornado
         if platform.system().lower() == 'windows':
             resultado = re.search(r'tempo[=<](\d+)ms', saida, re.IGNORECASE)
             if not resultado:
@@ -50,14 +46,13 @@ def analisar_rede():
     ping_ms = obter_ping()
 
     if ping_ms is None:
-        texto_status = "A conexão da rede está inativa ou sem internet."
+        texto_status = "Sem conexão com a Internet"
         texto_ping = "Ping: Falha"
         cor = "red"
-
     else:
         texto_ping = f"Ping: {ping_ms:.0f} ms"
-        # Lógica de avaliação do Ping
-        if ping_ms < 50:
+        # Lógica de avaliação ajustada (Thresholds realistas)
+        if ping_ms < 60:
             texto_status = "Conexão Excelente"
             cor = "green"
         elif ping_ms < 150:
@@ -67,38 +62,32 @@ def analisar_rede():
             texto_status = "Conexão com Latência Alta"
             cor = "orange"
         else:
-        texto_status = "Conexão Instável / Muito Lenta"
-        cor = "darkred"
+            texto_status = "Conexão Instável / Muito Lenta"
+            cor = "darkred"
 
-     # Atualiza os textos na interface gráfica
     lbl_ip.config(text=f"IP Local: {ip}")
     lbl_status.config(text=texto_status, fg=cor)
     lbl_ping.config(text=texto_ping)
-    
- # ======================================
- # Configuração da Interface Gráfica (Tkinter)
- # ====================================== 
+
+# --- Interface Gráfica ---
 
 root = tk.Tk()
 root.title("Monitor de Rede")
-root.geometry("350x200")
+root.geometry("350x220")
 
-# Elementos visuais
-lbl_ip = tk.Label(root, text="Status: Aguardando...", font=("Arial", 12))
-lbl_ip.pack(pady=15)
+lbl_ip = tk.Label(root, text="IP Local: Aguardando...", font=("Arial", 11))
+lbl_ip.pack(pady=10)
 
 lbl_status = tk.Label(root, text="Status: Aguardando...", font=("Arial", 12, "bold"))
 lbl_status.pack(pady=5)
 
-lbl_ping = tk.Label(root, text="Ping: Aguardando...", font=("Arial", 12))
+lbl_ping = tk.Label(root, text="Ping: Aguardando...", font=("Arial", 11))
 lbl_ping.pack(pady=10)
 
 btn_analisar = tk.Button(root, text="Atualizar Análise", command=analisar_rede, font=("Arial", 10))
 btn_analisar.pack(pady=10)
 
-#Roda a primeira análise automaticamente ao abrir
+# Primeira análise automática
 analisar_rede()
-
-#Inicia o loo da janela
 
 root.mainloop()
