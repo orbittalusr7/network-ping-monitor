@@ -67,8 +67,8 @@ def analisar_rede():
             texto_status = "Conexão com Latência Alta"
             cor = "orange"
         else:
-		texto_status = "Conexão Instável / Muito Lenta"
-		cor = "darkred"
+        texto_status = "Conexão Instável / Muito Lenta"
+        cor = "darkred"
 
      # Atualiza os textos na interface gráfica
     lbl_ip.config(text=f"IP Local: {ip}")
